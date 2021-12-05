@@ -1,7 +1,7 @@
 # spotify-vk-api
 
 Установка:
-1. Установить NodeJs библиотеку Spotify, k-io и colors
+1. Установить NodeJs библиотеку Spotify, vk-io и colors
 2. Получить токен ВК и Spotify
 3. Вставить в getMe.js токен ВК и Spotify (Большими буквами всё указано)
 4. В index.js вставить clientId и clientSecret
