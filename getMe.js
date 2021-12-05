@@ -1,15 +1,16 @@
 const fs = require('fs')
 const { VK } = require('vk-io');
+const colors = require('colors');
 const SpotifyWebApi = require('spotify-web-api-node');
-const token = "ВАШ ТОКЕН SPOTIFT";
+const token = "ВАШ ТОКЕН SPOTIFY";
 const spotifyApi = new SpotifyWebApi();
 spotifyApi.setAccessToken(token);
 
 
 const vk = new VK({
-	token: "ВАШ ТОКЕН ВК"
+	token: "ВАШ ВК ТОКЕН"
 });
-const id = 'ВАШ ID ВК';
+const id = 320494971;
 var spotify_id = '';
 var init = null;
 var duration = null;
@@ -25,7 +26,7 @@ async function getStatus() {
       user_id: id
   });
   text = status.text;
-  await console.log(`Статус в ВК: ${text}`);
+  await console.log(`[ВКонтакте] Статус в ВК: ${text}`.blue);
 }
 getStatus();
 
@@ -54,13 +55,14 @@ async function getInfo(userID) {
   sec = Math.floor((ms/1000) % 60);
   min = (min < 9) ? "0" + min : min;
   sec = (sec < 9) ? "0" + sec : sec;
-  await console.log(`[Spotify] Текущий трек в Spotify: ${data.body.item.name} ${data.body.item.artists[0].name} | Прогресс трека: ${min}:${sec}м.`.green);
-  await console.log(`[ВКонтакте] Статус в ВК: ${data.body.item.name}, ${data.body.item.artists[0].name}`.blue);
+  await console.log(`[Spotify] Текущий трек в Spotify: «${data.body.item.name} ${data.body.item.artists[0].name}» | ${min}:${sec}м.`.green);
+  await console.log(`[ВКонтакте] Статус в ВК: Слушает в Spotify «${data.body.item.name}, ${data.body.item.artists[0].name}»`.yellow);
 
-  changeStatus(`► Spotify: ${data.body.item.name}, ${data.body.item.artists[0].name}`);
-
-  changeTimer(data.body.item.duration_ms - ms + 5000);
-  duration = data.body.item.duration_ms - ms + 1000;
+  changeStatus(`Слушает в Spotify «${data.body.item.name}, ${data.body.item.artists[0].name}»`);
+  var trackDuration = data.body.item.duration_ms;
+  var trackProgress = data.body.progress_ms;
+  var total = trackDuration - (trackProgress + 700);
+  changeTimer(total);
 }
 
 
