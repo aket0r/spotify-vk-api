@@ -7,9 +7,9 @@
 4. В index.js вставить clientId и clientSecret
 
 
-< npm install spotify-web-api-node --save >
-< npm install vk-io --save >
-< npm install colors --save >
+<npm install spotify-web-api-node --save>
+<npm install vk-io --save>
+<npm install colors --save>
 
 # Ссылки:
 
