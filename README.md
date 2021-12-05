@@ -6,10 +6,13 @@
 3. Вставить в getMe.js токен ВК и Spotify (Большими буквами всё указано)
 4. В index.js вставить clientId и clientSecret
 
-
-**npm install spotify-web-api-node --save
-npm install vk-io --save
-npm install colors --save**
+***
+**npm install spotify-web-api-node --save**
+***
+**npm install vk-io --save**
+***
+**npm install colors --save**
+***
 
 # Ссылки:
 
