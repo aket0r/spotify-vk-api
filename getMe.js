@@ -52,10 +52,10 @@ async function getInfo(userID) {
   var ms = data.body.progress_ms,
   min = Math.floor((ms/1000/60) << 0),
   sec = Math.floor((ms/1000) % 60);
-  console.log(`<---------------------->`);
-  await console.log(`Текущий трек в Spotify: ${data.body.item.name} ${data.body.item.artists[0].name} | Прогресс трека: ${min}:${sec}`);
-  await console.log(`Статус в ВК: ${data.body.item.name}, ${data.body.item.artists[0].name}`);
-  console.log(`<---------------------->`);
+  min = (min < 9) ? "0" + min : min;
+  sec = (sec < 9) ? "0" + sec : sec;
+  await console.log(`[Spotify] Текущий трек в Spotify: ${data.body.item.name} ${data.body.item.artists[0].name} | Прогресс трека: ${min}:${sec}м.`.green);
+  await console.log(`[ВКонтакте] Статус в ВК: ${data.body.item.name}, ${data.body.item.artists[0].name}`.blue);
 
   changeStatus(`► Spotify: ${data.body.item.name}, ${data.body.item.artists[0].name}`);
 
