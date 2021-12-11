@@ -2,18 +2,17 @@ const fs = require('fs')
 const { VK } = require('vk-io');
 const colors = require('colors');
 const SpotifyWebApi = require('spotify-web-api-node');
-const token = "ВАШ ТОКЕН SPOTIFY";
+const token = "ВАШ ТОКЕН";
 const spotifyApi = new SpotifyWebApi();
 spotifyApi.setAccessToken(token);
 
 
 const vk = new VK({
-	token: "ВАШ ВК ТОКЕН"
+	token: "ВАШ ТОКЕН"
 });
 const id = 320494971;
 var spotify_id = '';
 var init = null;
-var duration = null;
 
 async function changeStatus(text) {
   const change = await vk.api.status.set({
@@ -26,7 +25,7 @@ async function getStatus() {
       user_id: id
   });
   text = status.text;
-  await console.log(`[ВКонтакте] Статус в ВК: ${text}`.blue);
+  await console.log(`${text}`.green);
 }
 getStatus();
 
@@ -36,7 +35,7 @@ function getMyData() {
     const me = await spotifyApi.getMe();
     // console.log(me.body);
     // getUserPlaylists(me.body.id);
-    getInfo(me.body.id);
+    run(me.body.id);
     // getCurrentSongDuration(me.body.id);
     spotify_id = me.body.id;
   })().catch(e => {
@@ -44,35 +43,24 @@ function getMyData() {
   });
 }
 
-//TEST METHOD
-async function getInfo(userID) {
+// RUN
+async function run(userID) {
   const data = await spotifyApi.getMyCurrentPlaybackState(userID);
-  const currentTrack = await spotifyApi.getMyCurrentPlayingTrack();
-  // console.log(data.body.item.duration_ms);
+  const duration = data.body.item.duration_ms;
+  const progress = data.body.progress_ms;
+  const currentPlaySong = data.body.item.name;
+  const artist = data.body.item.artists[0];
 
-  var ms = data.body.progress_ms,
-  min = Math.floor((ms/1000/60) << 0),
-  sec = Math.floor((ms/1000) % 60);
-  min = (min < 9) ? "0" + min : min;
-  sec = (sec < 9) ? "0" + sec : sec;
-  await console.log(`[Spotify] Текущий трек в Spotify: «${data.body.item.name} ${data.body.item.artists[0].name}» | ${min}:${sec}м.`.green);
-  await console.log(`[ВКонтакте] Статус в ВК: Слушает в Spotify «${data.body.item.name}, ${data.body.item.artists[0].name}»`.yellow);
+  var total = duration - progress;
+  await console.log(`\n     ${duration} | ${progress} | ${duration - progress}\n`.green);
+  await changeStatus(`Слушает в Spotify «${currentPlaySong}, ${artist.name}»`);
+  await getStatus();
 
-  changeStatus(`Слушает в Spotify «${data.body.item.name}, ${data.body.item.artists[0].name}»`);
-  var trackDuration = data.body.item.duration_ms;
-  var trackProgress = data.body.progress_ms;
-  var total = trackDuration - (trackProgress + 700);
-  changeTimer(total);
-}
-
-
-// CHANGE SONG AFTER HE'S END
-async function changeTimer(ms, track) {
-  const trackName = await spotifyApi.getMyCurrentPlayingTrack(spotify_id);
-  track = trackName.body.item.name;
   setTimeout(() => {
-    getInfo(spotify_id)
-  }, ms);
-}
+    run(spotify_id);
+  }, total);
+}.catch((e) => {
+  console.log(`${e}`.red);
+})
 
 getMyData();
