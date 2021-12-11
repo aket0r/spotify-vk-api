@@ -54,11 +54,10 @@ async function run(userID) {
   var total = duration - progress;
   await console.log(`\n     ${duration} | ${progress} | ${duration - progress}\n`.green);
   await changeStatus(`Слушает в Spotify «${currentPlaySong}, ${artist.name}»`);
-  await getStatus();
 
   setTimeout(() => {
     run(spotify_id);
-  }, total);
+  }, total + 3000);
 }
 
 getMyData();
