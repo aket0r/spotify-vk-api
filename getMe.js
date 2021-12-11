@@ -2,13 +2,13 @@ const fs = require('fs')
 const { VK } = require('vk-io');
 const colors = require('colors');
 const SpotifyWebApi = require('spotify-web-api-node');
-const token = "ВАШ ТОКЕН";
+const token = "ВАШ ТОКЕН SPOTIFY";
 const spotifyApi = new SpotifyWebApi();
 spotifyApi.setAccessToken(token);
 
 
 const vk = new VK({
-	token: "ВАШ ТОКЕН"
+	token: "ВАШ ТОКЕН ВК"
 });
 const id = 320494971;
 var spotify_id = '';
@@ -25,7 +25,6 @@ async function getStatus() {
       user_id: id
   });
   text = status.text;
-  await console.log(`${text}`.green);
 }
 getStatus();
 
@@ -53,6 +52,7 @@ async function run(userID) {
 
   var total = duration - progress;
   await console.log(`\n     ${duration} | ${progress} | ${duration - progress}\n`.green);
+  await console.log(`Слушает в Spotify «${currentPlaySong}, ${artist.name}»`.green);
   await changeStatus(`Слушает в Spotify «${currentPlaySong}, ${artist.name}»`);
 
   setTimeout(() => {
