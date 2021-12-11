@@ -59,8 +59,6 @@ async function run(userID) {
   setTimeout(() => {
     run(spotify_id);
   }, total);
-}.catch((e) => {
-  console.log(`${e}`.red);
-})
+}
 
 getMyData();
